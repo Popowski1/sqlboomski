@@ -36,3 +36,42 @@ function loadUp() {
         }
     });
 }
+function addDepartment(){
+    inquirer.prompt({
+    
+        type: "input",
+        name: "deptName",
+        message: "department ?"
+      }).then(function(answer){connection.query("INSERT INTO department (name) VALUES (?)", [answer.deptName], function(err,res){
+        if (err) throw err;
+        console.table(res)
+        loadUp()
+      })
+    })
+
+}
+function addRole(){
+    inquirer.prompt([
+    {
+        type: "input",
+        name: "roleName",
+        message: "role ?"
+      },
+      {
+        type: "input",
+        name: "roleSalary",
+        message: "role salary ?"
+      },
+      {
+        type: "input",
+        name: "deptID",
+        message: "dept id ?"
+      },
+    ]).then(function(answer){connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName], [answer.roleSalary], [answer.deptID], function(err,res){
+        if (err) throw err;
+        console.table(res)
+        loadUp()
+      });
+    });
+
+}

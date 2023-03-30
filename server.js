@@ -30,9 +30,9 @@ function loadUp() {
             break;
             case  "update emproll": viewEmproll();
             break;
-            case "end": end();
+            case "finish": finish();
             break;
-            default: end();
+            default: finish();
         }
     });
 }
@@ -74,4 +74,82 @@ function addRole(){
       });
     });
 
+}
+function addEmployee(){
+    inquirer.prompt([
+    {
+        type: "input",
+        name: "empF",
+        message: "name ?"
+      },
+      {
+        type: "input",
+        name: "empL",
+        message: "last name ?"
+      },
+      {
+        type: "input",
+        name: "roleID",
+        message: "role id ?"
+      },
+      {
+        type: "input",
+        name: "managerID",
+        message: "manager id ?"
+      },
+    ]).then(function(answer){connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.empF], [answer.empL], [answer.roleID], [answer.managerID], function(err,res){
+        if (err) throw err;
+        console.table(res)
+        loadUp()
+      });
+    });
+
+}
+function viewEmproll(){
+    inquirer.prompt([
+    {
+        type: "input",
+        name: "empUpdate",
+        message: "which employee ?"
+      },
+      {
+        type: "input",
+        name: "updateRole",
+        message: "new role ?"
+      }
+    ])
+      .then(function(answer){connection.query("UPDATE employee SET role_id=? first_name =?",  [answer.updateRole], [answer.empUpdate],  function(err,res){
+        if (err) throw err;
+        console.table(res)
+        loadUp()
+      
+    });
+});
+}
+function viewDepartment() {
+    let query = "SELECT * FROM department";
+    connection.query(query, function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    loadUp();
+});
+}
+function viewRole() {
+    let query = "SELECT * FROM role";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+    console.table(res);
+    loadUp();
+});
+}
+function viewEmployee() {
+    let query = "SELECT * FROM employee";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+    console.table(res);
+    loadUp();
+});
+}
+function finish(){connection.end();
+process.exit();
 }

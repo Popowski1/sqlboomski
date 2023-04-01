@@ -1,16 +1,21 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const cTable = require('console.table');
-const db = require(".");
-const connection = mysql.createConnection({host: "localhost", port: 3001, user: "root", password:"myman18", database:"employee_db"});
+
+
+
+const connection = mysql.createConnection({host: "localhost", port: 3306, user: "root", password:"myman18", database:"employee_db"});
 
 connection.connect(function(err){
     if (err) throw err;
     loadUp();
 });
+process.on('uncaughtException', function (err) {
+  console.log(err);
+}); 
 
 function loadUp() {
-    inquirer.createPromptModule({
+    inquirer.prompt({
         type: "list",
         choices:["add department", "add role", "add employee", "view department", "view role", "view employees","update emproll","end"],
         message: "select one",
@@ -50,7 +55,9 @@ function addDepartment(){
     })
 
 }
+
 function addRole(){
+ 
     inquirer.prompt([
     {
         type: "input",
@@ -65,10 +72,12 @@ function addRole(){
       {
         type: "input",
         name: "deptID",
-        message: "dept id ?"
-      },
-    ]).then(function(answer){connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName], [answer.roleSalary], [answer.deptID], function(err,res){
+        message: "dept name ?"
+        
+      }
+    ]).then(function(answer){connection.query("INSERT INTO role (name, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.roleSalary, answer.deptID], function(err,res){
         if (err) throw err;
+       
         console.table(res)
         loadUp()
       });
@@ -89,15 +98,15 @@ function addEmployee(){
       },
       {
         type: "input",
-        name: "roleID",
+        name:"eRoleID",
         message: "role id ?"
       },
       {
         type: "input",
-        name: "managerID",
+        name: "eManagerID",
         message: "manager id ?"
-      },
-    ]).then(function(answer){connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.empF], [answer.empL], [answer.roleID], [answer.managerID], function(err,res){
+      }
+    ]).then(function(answer){connection.query("INSERT INTO employee (first_name, last_name, eRole_id, eManager_id) VALUES (?, ?, ?, ?)", [answer.empF, answer.empL, answer.eRoleID, answer.eManagerID], function(err,res){
         if (err) throw err;
         console.table(res)
         loadUp()
@@ -118,7 +127,7 @@ function viewEmproll(){
         message: "new role ?"
       }
     ])
-      .then(function(answer){connection.query("UPDATE employee SET role_id=? first_name =?",  [answer.updateRole], [answer.empUpdate],  function(err,res){
+      .then(function(answer){connection.query("UPDATE employee SET role_id=? first_name =?",  [answer.updateRole, answer.empUpdate],  function(err,res){
         if (err) throw err;
         console.table(res)
         loadUp()

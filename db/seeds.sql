@@ -1,9 +1,9 @@
 INSERT INTO department (name)
 VALUES  
-('art')
-('bombs')
-('paint')
-('toys')
+('art'),
+('bombs'),
+('paint'),
+('toys');
 
 INSTER INTO role (title, department_id, salary)
 VALUES
@@ -16,7 +16,7 @@ VALUES
 ('chainGanging', 4, 9),
 ('bigWhistlers', 4, 2);
 
-INSERT INTO employee(last_name, first_name, role_id, manager_id)
+INSERT INTO employee(last_name, first_name, eRole_id, eManager_id)
 VALUES
 ('nong', 'Chuck', 1, null),
 ('nong', 'John', 2, null),

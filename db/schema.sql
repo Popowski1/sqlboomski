@@ -2,9 +2,14 @@ DROP DATABASE IF EXISTS employee_db;
 CREATE DATABASE employee_db;
 USE employee_db;
 
+SET GLOBAL FOREIGN_KEY_CHECKS=0;
+
 CREATE TABLE department (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMEN
     name VARCHAR(30)
+    PRIMARY KEY (id)
+    
+
 
  
 );
@@ -13,24 +18,16 @@ CREATE TABLE role (
     name VARCHAR(30),
     salary DECIMAL,
    department_id INT,
-    FOREIGN KEY (department_id)
-    REFERENCES department(id)
-    ON DELETE SET NULL
+    PRIMARY KEY (id)
  
 );
 CREATE TABLE employee (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    role_id INT,
-    manager_id INT,
-    FOREIGN KEY (role_id)
-    REFERENCES role(id)
-    ON DELETE SET NULL,
-     FOREIGN KEY (manager_id)
-    REFERENCES employee(id)
-    
-    ON DELETE SET NULL
+    eRole_id INT,
+    eManager_id INT,
+    PRIMARY KEY (id)
     
  
 );
